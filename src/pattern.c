@@ -7,6 +7,8 @@ static int _pattern_valid(const pattern_t *ptn);
 
 static pattern_t active_pattern;
 static frame_t frame_buff[FRAMES_MAX];
+static int current_frame = -1;
+
 static frame_t default_frame;
 
 int
@@ -20,6 +22,11 @@ pattern_start(const pattern_t *ptn)
         return (-1);
     }
 
+    memcpy(&active_pattern, ptn, sizeof(pattern_t));
+    active_pattern.frames = frame_buff; /* Don't point to provided frames */
+    memcpy(&frame_buff, ptn->frames, sizeof(frame_t) * ptn->nframes);
+    current_frame = 0;
+
     return (0);
 }
 
@@ -28,6 +35,8 @@ pattern_stop()
 {
     memset(&active_pattern, 0, sizeof(pattern_t));
     memset(frame_buff, 0, sizeof(frame_buff));
+    current_frame = -1;
+
     return (0);
 }
 
@@ -60,6 +69,8 @@ pattern_set_ripple(pattern_t *ptn, button_loc_t start_btn)
     if (!_pattern_valid(ptn)) {
         return (-1);
     }
+
+    return (0);
 }
 
 int
