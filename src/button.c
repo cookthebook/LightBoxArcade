@@ -8,5 +8,8 @@ apply_value(button_t *btn, int value)
     }
 
     btn->value = value;
+
+    /* TODO: set appropriate digital or PWM values */
+
     return (0);
 }
