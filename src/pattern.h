@@ -32,7 +32,7 @@ typedef struct pattern_struct {
  * The internal current pattern is automatically stopped if running, since
  * this town ain't big enough for the two of us
  *
- * Returns immediately */
+ * Returns immediately, no reference to the given pattern is stored */
 int pattern_start(const pattern_t *ptn);
 
 /* Stop the current pattern
@@ -40,7 +40,9 @@ int pattern_start(const pattern_t *ptn);
  * Otherwise, the LED's stay in the last known state. */
 int pattern_stop();
 
-/* Set a default frame for when a pattern isn't active */
+/* Set a default frame for when a pattern isn't active
+ *
+ * No reference to the given frame is stored */
 int pattern_set_default_frame(const frame_t *frame);
 
 const frame_t *pattern_get_default_frame();
@@ -49,7 +51,7 @@ const pattern_t *pattern_get_active_pattern();
 
 
 /* Fill the pattern with a basic pulsing style */
-int pattern_set_ripple(pattern_t *ptn, button_loc_t start_btn);
+int pattern_set_pulse(pattern_t *ptn);
 
 /* Frames are only with LEDs on */
 int pattern_set_onlyon(pattern_t *ptn);

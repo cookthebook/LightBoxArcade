@@ -27,6 +27,8 @@ pattern_start(const pattern_t *ptn)
     memcpy(&frame_buff, ptn->frames, sizeof(frame_t) * ptn->nframes);
     current_frame = 0;
 
+    /* TODO: create a FreeRTOS looping task that can apply the frames */
+
     return (0);
 }
 
@@ -64,10 +66,33 @@ pattern_get_active_pattern()
 }
 
 int
-pattern_set_ripple(pattern_t *ptn, button_loc_t start_btn)
+pattern_set_pulse(pattern_t *ptn)
 {
     if (!_pattern_valid(ptn)) {
         return (-1);
+    }
+
+    /* off up to on */
+    for (int i = 0; i < ptn->nframes / 2; i++) {
+        frame_t *cur = &ptn->frames[i];
+        cur->style = FRAME_PWM;
+
+        int val = (i * 2 * UINT8_MAX) / ptn->nframes;
+        for (int p = 0; p < BUTTON_CNT; p++) {
+            cur->btn_vals[p] = (uint8_t)val;
+        }
+    }
+
+    /* on down to off */
+    for (int i = ptn->nframes / 2; i < ptn->nframes; i++) {
+        frame_t *cur = &ptn->frames[i];
+        cur->style = FRAME_PWM;
+
+        int val = UINT8_MAX -
+            ((i - ptn->nframes / 2) * 2 * UINT8_MAX) / ptn->nframes;
+        for (int p = 0; p < BUTTON_CNT; p++) {
+            cur->btn_vals[p] = (uint8_t)val;
+        }
     }
 
     return (0);
