@@ -4,9 +4,10 @@ Reponsive lighting project for fightsicks (8 button) using an STMG070RB.
 
 ## Requirements
 
-- [`amazon-freertos`](git@github.com:aws/amazon-freertos.git)
 - `arm-none-eabi-gcc/gdb`
 - `st-util`
+
+For `amazon-freertos`, make sure that you are on the `release` branch.
 
 ## Design
 
